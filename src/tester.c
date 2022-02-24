@@ -97,6 +97,8 @@ static char *all_tests() {
 }
 
  int main(int argc, char **argv) {   
+     
+
     char *result = all_tests();
 
     if (result != 0) 
@@ -107,4 +109,5 @@ static char *all_tests() {
     printf("Tests run: %d\n", tests_run);
 
     return result != 0;
- }
+   
+}
