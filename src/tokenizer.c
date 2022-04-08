@@ -27,8 +27,8 @@ char *word_start(char *str){
   while (space_char(*start)){
       start++;
   }
-    
-  return start; 
+  
+  return start;
 }
 
 char *word_terminator(char *word){
@@ -44,11 +44,46 @@ char *word_terminator(char *word){
 
 int count_words(char *str){
 
+  int count=0;
+  boolean word_found = false;
+
+
+  if(*str == 0){
+    return 0;
+  }
+
+  while(!word_found | *str != 0){
+    if(space_char(*str)){
+      word_found = false;
+      str++;
+    }
+    else{
+      if(!word_found){
+	word_found = true;
+	count++;
+	str++
+      }
+      else{
+	str++
+    }
+
+
+  }
+  return count;
+  
 }
 
 char *copy_str(char *inStr, short len){
+  char *copy;
+  copy = (char*)malloc(sizeof(char)*(len+1));
 
+  int i =0;
+  for(i=0;i<len;i++){
+    copy[i] = inStr[i];
+  }
 
+  return copy;
+  
 }
 
 char**tokenize(char *str){
