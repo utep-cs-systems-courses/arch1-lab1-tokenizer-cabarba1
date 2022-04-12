@@ -1,4 +1,7 @@
 #include "tokenizer.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 /*
 hex values in ascii table for space and tab are 
@@ -14,6 +17,9 @@ int space_char(char c){
 }
 
 int non_space_char(char c ){
+  if(c == '\0'){
+    return 0;
+  }
   if (c != 0x20 || c != 0x09){
     return 1;
   }
@@ -22,7 +28,7 @@ int non_space_char(char c ){
 }
 
 char *word_start(char *str){
-  char *start = 0;
+  char *start;
   start = str;
   while (space_char(*start)){
       start++;
@@ -32,9 +38,14 @@ char *word_start(char *str){
 }
 
 char *word_terminator(char *word){
-  char *term = 0;
+  char *term;
+  
   term = word;
-  while(non_space_char(*term)){
+
+  if(*term == '\0'){
+    return term;
+  }
+  while(!space_char(*term)){
     term++;
   }
   return term;
@@ -45,9 +56,9 @@ char *word_terminator(char *word){
 int count_words(char *str){
 
   int count=0;
-  boolean word_found = false;
+  bool word_found = false;
 
-
+  
   if(*str == 0){
     return 0;
   }
@@ -61,14 +72,16 @@ int count_words(char *str){
       if(!word_found){
 	word_found = true;
 	count++;
-	str++
+	str++;
       }
       else{
-	str++
+	str++;
+      }
     }
-
+  
 
   }
+
   return count;
   
 }
@@ -77,18 +90,41 @@ char *copy_str(char *inStr, short len){
   char *copy;
   copy = (char*)malloc(sizeof(char)*(len+1));
 
-  int i =0;
-  for(i=0;i<len;i++){
+  
+  for(int i = 0;i<len;i++){
     copy[i] = inStr[i];
   }
+  copy[len] = '\0';
 
   return copy;
   
 }
 
 char**tokenize(char *str){
+  char **tokens;
 
+  int cw = count_words(str);
+  tokens = (char **) malloc(sizeof(char *) * (cw+1));
 
+  char *ws;
+  char *wt;
+
+  ws = word_start(str);
+  wt = word_terminator(str);
+
+  int len;
+
+  for(int i = 0; i < cw; i++){
+    len = wt - ws; 
+    tokens[i]= copy_str(ws,len);
+   
+    ws = word_start(wt);
+    wt = word_terminator(ws);
+
+ }
+  tokens[cw] = '\0';
+
+  return tokens;
 }
 
 void print_tokens(char **tokens){
