@@ -128,10 +128,26 @@ char**tokenize(char *str){
 }
 
 void print_tokens(char **tokens){
-
+  
+  
+  while(*tokens != '\0'){
+    printf("%s\n",*tokens);
+    tokens++;
+  }
+  printf("0\n");
+ 
 }
 
 void free_tokens(char **tokens){
+  char **iter
 
+  while(*iter != '\0'){
+    free(*iter);
+    iter++;
+  }
+ 
+  free(*iter);//frees \0
+  free(tokens);
+  
 }
 
